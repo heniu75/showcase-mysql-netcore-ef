@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace MySqlEfCoreConsole
 {
@@ -21,11 +20,11 @@ namespace MySqlEfCoreConsole
         public virtual ICollection<Book> Books { get; set; }
     }
 
-    //public class MetaData
-    //{
-    //    public int Id { get; set; }
-    //    public bool DataSeeded { get; set; }
-    //    public DateTime? StatusAt { get; set; }
-    //}
+    public class MetaData
+    {
+        public int Id { get; set; }
+        public bool DataSeeded { get; set; }
+        public DateTime? StatusAt { get; set; }
+    }
 }
 

@@ -8,7 +8,7 @@ namespace MySqlEfCoreConsole
 
         public DbSet<Publisher> Publisher { get; set; }
 
-        //public DbSet<MetaData> MetaData { get; set; }
+        public DbSet<MetaData> MetaData { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -33,12 +33,12 @@ namespace MySqlEfCoreConsole
                   .WithMany(p => p.Books);
             });
 
-            //modelBuilder.Entity<MetaData>(entity =>
-            //{
-            //    entity.HasKey(e => e.Id);
-            //    entity.Property(e => e.DataSeeded).IsRequired();
-            //    entity.Property(e => e.StatusAt).IsRequired();
-            //});
+            modelBuilder.Entity<MetaData>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.DataSeeded).IsRequired();
+                entity.Property(e => e.StatusAt).IsRequired();
+            });
         }
     }
 }

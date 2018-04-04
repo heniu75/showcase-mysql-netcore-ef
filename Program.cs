@@ -13,7 +13,6 @@ namespace MySqlEfCoreConsole
     // ef core Package Manager Console (PMC), dont use CLI (as at 04/04)
     // https://docs.microsoft.com/en-us/ef/core/miscellaneous/cli/powershell
 
-
     //  current orale mysql ef provider (as at 04/04) does not fully support ef core migrations
     // therefore am using https://github.com/PomeloFoundation/Pomelo.EntityFrameworkCore.MySql
 
@@ -31,9 +30,9 @@ namespace MySqlEfCoreConsole
         {
             using (var context = new LibraryContext())
             {
-                // Creates the database if not exists
-                context.Database.EnsureCreated();
-                //context.Database.Migrate();
+                // Creates the database if not exists ... DONT USE THIS WHEN USING MIGRATIONS!
+                //context.Database.EnsureCreated();
+                context.Database.Migrate();
             }
         }
 
@@ -41,10 +40,10 @@ namespace MySqlEfCoreConsole
         {
             using (var context = new LibraryContext())
             {
-                //var meta = context.MetaData.FirstOrDefault();
-                //if (meta != null)
+                var meta = context.MetaData.FirstOrDefault();
+                if (meta != null)
                 {
-                    //if (meta.DataSeeded)
+                    if (meta.DataSeeded)
                     {
                         var lord = context.Book.Where(b => b.ISBN == "978-0544003415").FirstOrDefault();
                         if (lord != null)
@@ -56,8 +55,8 @@ namespace MySqlEfCoreConsole
                         if (mariner != null)
                             context.Publisher.Remove(mariner);
 
-                        //meta.DataSeeded = false;
-                        //meta.StatusAt = DateTime.Now;
+                        meta.DataSeeded = false;
+                        meta.StatusAt = DateTime.Now;
 
                         // Saves changes
                         context.SaveChanges();
@@ -70,8 +69,8 @@ namespace MySqlEfCoreConsole
         {
             using (var context = new LibraryContext())
             {
-                //var meta = context.MetaData.FirstOrDefault();
-                //if ((meta == null) || meta.DataSeeded)
+                var meta = context.MetaData.FirstOrDefault();
+                if ((meta == null) || (!meta.DataSeeded))
                 {
                     // Adds a publisher
                     var publisher = new Publisher { Name = "Mariner Books" };
@@ -97,12 +96,14 @@ namespace MySqlEfCoreConsole
                         Publisher = publisher
                     });
 
-                    //if (meta == null)
-                    //    meta = new MetaData();
-                    //meta.DataSeeded = true;
-                    //meta.StatusAt = DateTime.Now;
+                    if (meta == null)
+                    {
+                        meta = new MetaData();
+                        context.MetaData.Add(meta);
+                    }
 
-                    //context.MetaData.Add(meta);
+                    meta.DataSeeded = true;
+                    meta.StatusAt = DateTime.Now;
 
                     // Saves changes
                     context.SaveChanges();
