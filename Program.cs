@@ -5,7 +5,18 @@ using System.Text;
 
 namespace MySqlEfCoreConsole
 {
-    // see example - https://dev.mysql.com/doc/connector-net/en/connector-net-entityframework-core-example.html
+    // see https://www.learnentityframeworkcore.com/
+
+    // see example      - https://dev.mysql.com/doc/connector-net/en/connector-net-entityframework-core-example.html
+    // see ef core docs - https://docs.microsoft.com/en-us/ef/core/
+
+    // ef core Package Manager Console (PMC), dont use CLI (as at 04/04)
+    // https://docs.microsoft.com/en-us/ef/core/miscellaneous/cli/powershell
+
+
+    //  current orale mysql ef provider (as at 04/04) does not fully support ef core migrations
+    // therefore am using https://github.com/PomeloFoundation/Pomelo.EntityFrameworkCore.MySql
+
     class Program
     {
         static void Main(string[] args)
@@ -22,6 +33,7 @@ namespace MySqlEfCoreConsole
             {
                 // Creates the database if not exists
                 context.Database.EnsureCreated();
+                //context.Database.Migrate();
             }
         }
 
@@ -29,18 +41,28 @@ namespace MySqlEfCoreConsole
         {
             using (var context = new LibraryContext())
             {
-                var lord = context.Book.Where(b => b.ISBN == "978-0544003415").FirstOrDefault();
-                if (lord != null)
-                    context.Book.Remove(lord);
-                var letter = context.Book.Where(b => b.ISBN == "978-0547247762").FirstOrDefault();
-                if (letter != null)
-                    context.Book.Remove(letter);
-                var mariner = context.Publisher.Where(m => m.Name == "Mariner Books").FirstOrDefault();
-                if (mariner != null)
-                    context.Publisher.Remove(mariner);
+                //var meta = context.MetaData.FirstOrDefault();
+                //if (meta != null)
+                {
+                    //if (meta.DataSeeded)
+                    {
+                        var lord = context.Book.Where(b => b.ISBN == "978-0544003415").FirstOrDefault();
+                        if (lord != null)
+                            context.Book.Remove(lord);
+                        var letter = context.Book.Where(b => b.ISBN == "978-0547247762").FirstOrDefault();
+                        if (letter != null)
+                            context.Book.Remove(letter);
+                        var mariner = context.Publisher.Where(m => m.Name == "Mariner Books").FirstOrDefault();
+                        if (mariner != null)
+                            context.Publisher.Remove(mariner);
 
-                // Saves changes
-                context.SaveChanges();
+                        //meta.DataSeeded = false;
+                        //meta.StatusAt = DateTime.Now;
+
+                        // Saves changes
+                        context.SaveChanges();
+                    }
+                }
             }
         }
 
@@ -48,35 +70,43 @@ namespace MySqlEfCoreConsole
         {
             using (var context = new LibraryContext())
             {
-                // Adds a publisher
-                var publisher = new Publisher
+                //var meta = context.MetaData.FirstOrDefault();
+                //if ((meta == null) || meta.DataSeeded)
                 {
-                    Name = "Mariner Books"
-                };
-                context.Publisher.Add(publisher);
+                    // Adds a publisher
+                    var publisher = new Publisher { Name = "Mariner Books" };
+                    context.Publisher.Add(publisher);
 
-                // Adds some books
-                context.Book.Add(new Book
-                {
-                    ISBN = "978-0544003415",
-                    Title = "The Lord of the Rings",
-                    Author = "J.R.R. Tolkien",
-                    Language = "English",
-                    Pages = 1216,
-                    Publisher = publisher
-                });
-                context.Book.Add(new Book
-                {
-                    ISBN = "978-0547247762",
-                    Title = "The Sealed Letter",
-                    Author = "Emma Donoghue",
-                    Language = "English",
-                    Pages = 416,
-                    Publisher = publisher
-                });
+                    // Adds some books
+                    context.Book.Add(new Book
+                    {
+                        ISBN = "978-0544003415",
+                        Title = "The Lord of the Rings",
+                        Author = "J.R.R. Tolkien",
+                        Language = "English",
+                        Pages = 1216,
+                        Publisher = publisher
+                    });
+                    context.Book.Add(new Book
+                    {
+                        ISBN = "978-0547247762",
+                        Title = "The Sealed Letter",
+                        Author = "Emma Donoghue",
+                        Language = "English",
+                        Pages = 416,
+                        Publisher = publisher
+                    });
 
-                // Saves changes
-                context.SaveChanges();
+                    //if (meta == null)
+                    //    meta = new MetaData();
+                    //meta.DataSeeded = true;
+                    //meta.StatusAt = DateTime.Now;
+
+                    //context.MetaData.Add(meta);
+
+                    // Saves changes
+                    context.SaveChanges();
+                }
             }
         }
 

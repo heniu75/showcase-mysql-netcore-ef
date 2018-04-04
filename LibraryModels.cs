@@ -25,7 +25,7 @@ namespace MySqlEfCoreConsole
     //{
     //    public int Id { get; set; }
     //    public bool DataSeeded { get; set; }
-    //    public DateTime? DataSeededAt { get; set; }
+    //    public DateTime? StatusAt { get; set; }
     //}
 }
 

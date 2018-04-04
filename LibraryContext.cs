@@ -12,7 +12,7 @@ namespace MySqlEfCoreConsole
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseMySQL("server=localhost;database=library;user=root;password=Password101");
+            optionsBuilder.UseMySql("server=localhost;database=library;user=root;password=Password101");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -37,7 +37,7 @@ namespace MySqlEfCoreConsole
             //{
             //    entity.HasKey(e => e.Id);
             //    entity.Property(e => e.DataSeeded).IsRequired();
-            //    entity.Property(e => e.DataSeededAt).IsRequired();
+            //    entity.Property(e => e.StatusAt).IsRequired();
             //});
         }
     }
